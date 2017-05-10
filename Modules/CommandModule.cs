@@ -14,18 +14,32 @@ namespace MessaBotCore.Modules
         private Random rnd = new Random();
         private GfycatClient gfyClient = new GfycatClient("2_Wz_5hd","JLd1JKMHxxjjcuJFqK7FDcKeuZnOepGNE3c52Lapae7RKO9ESnVHEtgrXU7jxZkq");
 
-        [Command("Trending"),Summary("Return a random trending gif from GfyCat")]
-        public async Task Trending(string category=null)
+        [Command("Trending"),Summary("Return a random trending gif from GfyCat using tag")]
+        public async Task Trending(string tag="Trending")
         {
-            var gifs = new List<Gfy>((await gfyClient.GetTrendingGfysAsync(category)).Content);
-            await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
+            try
+            {
+                var gifs = new List<Gfy>((await gfyClient.GetTrendingGfysAsync(tag)).Content);
+                await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
+            }
+            catch(GfycatException ex)
+            {
+                await ReplyAsync(ex.Description);
+            }
         }
 
         [Command("Search"),Summary("Return a random gif from GfyCat using search")]
         public async Task Search([RemainderAttribute]string search)
         {
+            try
+            {
                 var gifs = new List<Gfy>((await gfyClient.SearchAsync(search)).Content);
                 await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
+            }
+            catch(GfycatException ex)
+            {
+                await ReplyAsync(ex.Description);
+            }
         }
     }
 }

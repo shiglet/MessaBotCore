@@ -24,8 +24,6 @@ namespace MessaBotCore
 
             var context = new CommandContext(Client,message);
             var result = await CommandService.ExecuteAsync(context, pos);
-            if (!result.IsSuccess)
-                await context.Channel.SendMessageAsync(result.ErrorReason);
         }
     }
 }
