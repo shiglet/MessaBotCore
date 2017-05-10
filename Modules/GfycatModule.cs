@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Gfycat;
-
+using MessaBotCore.Services.Configuration;
 
 namespace MessaBotCore.Modules
 {
@@ -12,14 +12,21 @@ namespace MessaBotCore.Modules
     public class GfycatModule : ModuleBase
     {
         private Random rnd = new Random();
-        private GfycatClient gfyClient = new GfycatClient("2_Wz_5hd","JLd1JKMHxxjjcuJFqK7FDcKeuZnOepGNE3c52Lapae7RKO9ESnVHEtgrXU7jxZkq");
-
+        private DependencyMap _map;
+        private Config _config;
+        private GfycatClient GfycatClient{get;set;}
+        public GfycatModule(DependencyMap map ) : base()
+        {
+            _config = map.Get<Config>();
+            _map = map;
+            GfycatClient =  new GfycatClient(_config.GyfcatID,_config.GyfcatSecret);
+        }
         [Command("Trending"),Summary("Return a random trending gif from GfyCat using tag")]
         public async Task Trending(string tag="Trending")
         {
             try
             {
-                var gifs = new List<Gfy>((await gfyClient.GetTrendingGfysAsync(tag)).Content);
+                var gifs = new List<Gfy>((await GfycatClient.GetTrendingGfysAsync(tag)).Content);
                 await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
             }
             catch(GfycatException ex)
@@ -33,7 +40,7 @@ namespace MessaBotCore.Modules
         {
             try
             {
-                var gifs = new List<Gfy>((await gfyClient.SearchAsync(search)).Content);
+                var gifs = new List<Gfy>((await GfycatClient.SearchAsync(search)).Content);
                 await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
             }
             catch(GfycatException ex)

@@ -15,6 +15,7 @@ namespace MessaBotCore
     class MessaBot
     {
         private Config _config;
+        private DependencyMap _map = new DependencyMap();
         private Logger _log;
         public DiscordSocketClient  Client { get;private set; }
         public CommandService CommandService { get; private set; }
@@ -36,7 +37,9 @@ namespace MessaBotCore
 
             Client.Log += Log;
             await InitCommands();
-            CommandHandler = new CommandHandler(Client,CommandService);
+            _map.Add(Client);
+            _map.Add(_config);
+            CommandHandler = new CommandHandler(CommandService,_map);
             try
             {
                 var sw = Stopwatch.StartNew();

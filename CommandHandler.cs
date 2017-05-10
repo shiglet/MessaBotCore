@@ -1,29 +1,36 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using MessaBotCore.Services.Configuration;
+
 namespace MessaBotCore
 {
     public class CommandHandler
     {
         private DiscordSocketClient Client{get;set;}
         private CommandService CommandService{get;set;}
+        private DependencyMap _map;
+        private Config _config;
         
-        public CommandHandler(DiscordSocketClient client, CommandService commandService)
+        public CommandHandler(CommandService commandService,DependencyMap map)
         {
-            Client = client;
+            Client = map.Get<DiscordSocketClient>();
             CommandService = commandService;
-            client.MessageReceived += HandleCommand;
+            _map = map;
+            _config = map.Get<Config>();
+            
+            Client.MessageReceived += HandleCommand;
         }
 
         private async Task HandleCommand(SocketMessage arg)
         {
             var message = (SocketUserMessage) arg;
             if(message == null) return;
-            int pos = 0;//prefix position start
-            if (!(message.HasCharPrefix('?', ref pos) || message.HasMentionPrefix(Client.CurrentUser, ref pos))) return;
+            int pos = 0;
+            if (!(message.HasCharPrefix(_config.Prefix, ref pos) || message.HasMentionPrefix(Client.CurrentUser, ref pos))) return;
 
             var context = new CommandContext(Client,message);
-            var result = await CommandService.ExecuteAsync(context, pos);
+            var result = await CommandService.ExecuteAsync(context, pos,_map);
         }
     }
 }

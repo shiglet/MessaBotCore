@@ -8,13 +8,22 @@ namespace MessaBotCore.Services.Configuration
         [JsonProperty("Discord_Token")]
         public string DiscordToken {get;private set;}
         [JsonProperty("Riot_Token")]
+        
         public string RiotToken {get;private set;}
         [JsonProperty("Gyfcat_Id")]
         public string GyfcatID {get;private set;}
         [JsonProperty("Gyfcat_Secret")]
+
         public string GyfcatSecret {get;private set;}
         [JsonProperty("Prefix")]
-        public string Prefix {get;private set;}
+
+        public char Prefix {get;private set;}
+
+        [JsonProperty("Imgur_Id")]
+        public string ImgurId {get;private set;}
+        [JsonProperty("Imgur_Secret")]
+        public string ImgurSecret {get;private set;}
+
         public static Config Load()
         {
             if(File.Exists("config.json"))

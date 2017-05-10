@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Imgur.API.Authentication.Impl;
-
+using MessaBotCore.Services.Configuration;
 
 namespace MessaBotCore.Modules
 {
@@ -12,10 +12,16 @@ namespace MessaBotCore.Modules
     public class ImgurModule : ModuleBase
     {
         private Random rnd = new Random();
-        ImgurClient client = new ImgurClient("CLIENT_ID", "CLIENT_SECRET");
-
-       // private var gfyClient ("2_Wz_5hd","JLd1JKMHxxjjcuJFqK7FDcKeuZnOepGNE3c52Lapae7RKO9ESnVHEtgrXU7jxZkq");
-
+        private ImgurClient ImgurClient {get;set;}
+        private DependencyMap _map;
+        private Config _config;
+        public ImgurModule(DependencyMap map)
+        {
+            _config = map.Get<Config>();
+            _map = map;
+            ImgurClient = new ImgurClient(_config.ImgurId, _config.ImgurSecret);
+        }
+       // 
  /*       [Command("Random"),Summary("Return a random trending gif from GfyCat using tag")]
         public async Task Trending(string tag="Trending")
         {
