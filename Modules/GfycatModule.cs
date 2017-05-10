@@ -9,7 +9,7 @@ using Gfycat;
 namespace MessaBotCore.Modules
 {
     [Group("GfyCat")]
-    public class CommandModule : ModuleBase
+    public class GfycatModule : ModuleBase
     {
         private Random rnd = new Random();
         private GfycatClient gfyClient = new GfycatClient("2_Wz_5hd","JLd1JKMHxxjjcuJFqK7FDcKeuZnOepGNE3c52Lapae7RKO9ESnVHEtgrXU7jxZkq");

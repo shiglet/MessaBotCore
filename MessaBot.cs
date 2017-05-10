@@ -3,17 +3,18 @@ using Discord.WebSocket;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System.Reflection;
+using MessaBotCore.Services.Configuration;
 
 namespace MessaBotCore
 {
     class MessaBot
     {
+        private Config _config;
         private Logger _log;
         public DiscordSocketClient  Client { get;private set; }
         public CommandService CommandService { get; private set; }
@@ -29,24 +30,17 @@ namespace MessaBotCore
         public async Task RunAsync(string[] args)
         {
             SetupLogger();
-            string riotToken;
-            string token;
+            _config = Config.Load();
             _log = LogManager.GetCurrentClassLogger();
             _log.Info("Starting MessaBot");
 
             Client.Log += Log;
             await InitCommands();
             CommandHandler = new CommandHandler(Client,CommandService);
-            var config = new ConfigurationBuilder()
-            .AddJsonFile("config.json")
-            .Build();
-            token = config["Discord_Token"];
-            riotToken = config["Riot_Token"];
-
             try
             {
                 var sw = Stopwatch.StartNew();
-                await Client.LoginAsync(TokenType.Bot, token);
+                await Client.LoginAsync(TokenType.Bot, _config.DiscordToken);
                 await Client.StartAsync().ConfigureAwait(false);
                 sw.Stop();
                 _log.Info($"Connected in {sw.Elapsed.TotalSeconds.ToString("F2")}");
@@ -56,7 +50,6 @@ namespace MessaBotCore
                 Console.WriteLine($"ERROR :  Connection to discord API failed : {e.Message}");
             }
 
-            // Block this task until the program is closed.
             await Task.Delay(-1);
         }
 
