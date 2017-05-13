@@ -8,7 +8,7 @@ namespace MessaBotCore.Services.Configuration
         [JsonProperty("Discord_Token")]
         public string DiscordToken {get;private set;}
         [JsonProperty("Riot_Token")]
-        
+
         public string RiotToken {get;private set;}
         [JsonProperty("Gyfcat_Id")]
         public string GyfcatID {get;private set;}
@@ -23,6 +23,16 @@ namespace MessaBotCore.Services.Configuration
         public string ImgurId {get;private set;}
         [JsonProperty("Imgur_Secret")]
         public string ImgurSecret {get;private set;}
+
+        [JsonProperty("Reddit_Username")]
+        public string RedditUsername {get;private set;}
+        [JsonProperty("Reddit_Password")]
+        public string RedditPassword {get;private set;}
+        [JsonProperty("Reddit_Secret")]
+        public string RedditSecret {get;private set;}
+        [JsonProperty("Reddit_ClientId")]
+        public string RedditClientId {get;private set;}
+        
 
         public static Config Load()
         {

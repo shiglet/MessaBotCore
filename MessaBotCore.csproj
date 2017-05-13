@@ -13,10 +13,10 @@
     <PackageReference Include="Discord.Net.Core" Version="1.0.0-rc" />
     <PackageReference Include="Discord.Net.Rest" Version="1.0.0-rc" />
     <PackageReference Include="Discord.Net.WebSocket" Version="1.0.0-rc" />
-    <!--<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.0" />-->
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta4" />
     <PackageReference Include="Gfycat.Net" Version="1.0.8.50" />
-    <PackageReference Include="Imgur.API" Version="4.0.1" />
+    <!--<PackageReference Include="Imgur.API" Version="5.0.0-beta1" />-->
+    <PackageReference Include="RedditSharp" Version="2.0.0-CI00028" />
 
     
   </ItemGroup>

@@ -22,11 +22,12 @@ namespace MessaBotCore.Modules
             GfycatClient =  new GfycatClient(_config.GyfcatID,_config.GyfcatSecret);
         }
         [Command("Trending"),Summary("Return a random trending gif from GfyCat using tag")]
-        public async Task Trending(string tag="Trending")
+        public async Task Trending([RemainderAttribute]string tag="Trending")
         {
             try
             {
-                var gifs = new List<Gfy>((await GfycatClient.GetTrendingGfysAsync(tag)).Content);
+                var ret = await GfycatClient.GetTrendingGfysAsync(tag);
+                var gifs = new List<Gfy>(ret.Content);
                 await ReplyAsync(gifs[rnd.Next(0,gifs.Count)].Url);
             }
             catch(GfycatException ex)

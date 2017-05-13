@@ -3,7 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using MessaBotCore.Services.Configuration;
 
-namespace MessaBotCore
+namespace MessaBotCore.Services
 {
     public class CommandHandler
     {
@@ -18,7 +18,6 @@ namespace MessaBotCore
             CommandService = commandService;
             _map = map;
             _config = map.Get<Config>();
-            
             Client.MessageReceived += HandleCommand;
         }
 
@@ -30,6 +29,7 @@ namespace MessaBotCore
             if (!(message.HasCharPrefix(_config.Prefix, ref pos) || message.HasMentionPrefix(Client.CurrentUser, ref pos))) return;
 
             var context = new CommandContext(Client,message);
+            
             var result = await CommandService.ExecuteAsync(context, pos,_map);
         }
     }

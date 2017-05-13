@@ -9,6 +9,7 @@ using NLog.Config;
 using NLog.Targets;
 using System.Reflection;
 using MessaBotCore.Services.Configuration;
+using MessaBotCore.Services;
 
 namespace MessaBotCore
 {
