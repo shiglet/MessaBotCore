@@ -36,7 +36,7 @@ namespace MessaBotCore.Modules
             }
         }
 
-        [Command("Search"),Summary("Return a random gif from GfyCat using search")]
+        [Command("Search"),Summary("Return a random gif from GfyCat using search argument")]
         public async Task Search([RemainderAttribute]string search)
         {
             try

@@ -40,18 +40,20 @@ namespace MessaBotCore
             await InitCommands();
             _map.Add(Client);
             _map.Add(_config);
+            _map.Add(_log);//todo : add log into modules and CommandHandler;
             CommandHandler = new CommandHandler(CommandService,_map);
             try
             {
                 var sw = Stopwatch.StartNew();
                 await Client.LoginAsync(TokenType.Bot, _config.DiscordToken);
                 await Client.StartAsync().ConfigureAwait(false);
+                await Client.SetGameAsync("Type ?help or ?help <command_name> for help");
                 sw.Stop();
                 _log.Info($"Connected in {sw.Elapsed.TotalSeconds.ToString("F2")}");
             }
             catch(Exception e )
             {
-                Console.WriteLine($"ERROR :  Connection to discord API failed : {e.Message}");
+                _log.Warn($"ERROR :  Connection to discord API failed : {e.Message}");
             }
 
             await Task.Delay(-1);
@@ -74,7 +76,7 @@ namespace MessaBotCore
 
             return Task.CompletedTask;
         }
-        private static void SetupLogger()
+        private void SetupLogger()
         {
             try
             {
@@ -91,7 +93,7 @@ namespace MessaBotCore
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                _log.Warn(ex);
             }
         }
     }

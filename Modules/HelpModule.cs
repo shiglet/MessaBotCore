@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using MessaBotCore.Services.Configuration;
-
-public class HelpModule : ModuleBase
+namespace MessaBotCore.Modules
+{
+    public class HelpModule : ModuleBase
     {
         private CommandService _service;
         private Config _config;
@@ -18,7 +19,7 @@ public class HelpModule : ModuleBase
             _config = map.Get<Config>();
         }
 
-        [Command("help")]
+        [Command("help"),Summary("Display all available commands")]
         public async Task HelpAsync()
         {
             string prefix = _config.Prefix.ToString();
@@ -57,7 +58,7 @@ public class HelpModule : ModuleBase
             await ReplyAsync("", false, builder.Build());
         }
 
-        [Command("help")]
+        [Command("help"),Summary("Display information about a command")]
         public async Task HelpAsync([RemainderAttribute]string command)
         {
             var result = _service.Search(Context, command);
@@ -83,7 +84,7 @@ public class HelpModule : ModuleBase
                 {
                     x.Name = string.Join(", ", cmd.Aliases);
                     x.Value = $"Parameters: {string.Join(", ", cmd.Parameters.Select(p => p.Name))}\n" + 
-                              $"Summary: {cmd.Summary}";
+                                $"Summary: {cmd.Summary}";
                     x.IsInline = false;
                 });
             }
@@ -91,3 +92,4 @@ public class HelpModule : ModuleBase
             await ReplyAsync("", false, builder.Build());
         }
     }
+}
